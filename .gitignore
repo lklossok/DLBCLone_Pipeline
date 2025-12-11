@@ -1,0 +1,6 @@
+# Ignore all Snakemake working directories anywhere in the project
+.snakemake/
+*/.snakemake/
+*.pyc
+.DS_Store
+*.snakemake.log

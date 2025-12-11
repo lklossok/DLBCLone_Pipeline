@@ -1,8 +1,7 @@
 # Pin to the latest R 4.4 patch for stability
 FROM rocker/rstudio:4.4.1
 
-LABEL maintainer="kdreval@sfu.ca"
-LABEL description="Docker container for GAMBLR.predict (pinned & low-RAM build)"
+LABEL description="Docker container for GAMBLR packages (pinned & low-RAM build)"
 
 # ---- Versions you control (tags or SHAs) ----
 ARG GAMBLR_DATA_REF=v1.3.1

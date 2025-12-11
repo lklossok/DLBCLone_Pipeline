@@ -1,3 +1,0 @@
-NameError in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 6:
-name 'opt_model_path' is not defined
-  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 6, in <module>

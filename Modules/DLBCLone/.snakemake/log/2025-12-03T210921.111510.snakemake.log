@@ -1,3 +1,0 @@
-KeyError in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 27:
-'DLBCLone_model'
-  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 27, in <module>

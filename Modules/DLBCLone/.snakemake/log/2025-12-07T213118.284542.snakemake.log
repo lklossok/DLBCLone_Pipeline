@@ -1,8 +1,0 @@
-Building DAG of jobs...
-InputFunctionException in rule test_meta_maf_formatter in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 43:
-Error:
-  TypeError: <lambda>() missing 1 required positional argument: 'TMMF'
-Wildcards:
-
-Traceback:
-

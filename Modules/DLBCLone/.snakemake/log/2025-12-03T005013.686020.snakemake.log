@@ -1,5 +1,0 @@
-Building DAG of jobs...
-MissingInputException in rule all in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 6:
-Missing input files for rule all:
-    affected files:
-        data/opt_model/opt_model.rds

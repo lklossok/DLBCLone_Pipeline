@@ -1,3 +1,0 @@
-RuleException in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 44:
-Singularity directive is only allowed with shell, script, notebook or wrapper directives (not with run or template_engine).
-  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 44, in <module>
