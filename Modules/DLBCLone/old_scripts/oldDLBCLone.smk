@@ -9,6 +9,8 @@ CFG = config
 localrules:
     all,
     build_dlbclone_model,
+    test_meta_maf_formatter,
+    assemble_genetic_features,
     dlbclone_predict,
 
 
@@ -21,11 +23,59 @@ def as_r_list(d): # handle list objects from configfile
 
 rule all:
     input:
+        #"data/test_metadata_formatted.tsv",
+        #"data/test_maf_formatted.maf"
+        CFG["dlbclone_predict"]["test_data_dir"]
         #CFG["opt_model_path"] + "/" + CFG["model_name_prefix"] + "_model.rds",
         #CFG["opt_model_path"] + "/" + CFG["model_name_prefix"] + "_umap.uwot"
         #CFG["dlbclone_predict"]["pred_dir"] + "/" + CFG["model_name_prefix"] + "_DLBCLone_predictions.tsv"
 
-rule build_dlbclone_model: # Uses only GAMBL metadata and binary mutation data as training for DLBCLone models 
+rule test_meta_maf_formatter:
+    input:
+        test_metadata = CFG["test_meta_maf_formatter"]["test_metadata_dir"],
+        test_maf = CFG["test_meta_maf_formatter"]["test_maf_dir"]
+    output:
+        form_metadata = temp("data/test_metadata_formatted.tsv"),
+        form_maf = temp("data/test_maf_formatted.maf")
+    params:
+        sv_from_metadata = ",".join(CFG["test_meta_maf_formatter"]["sv_from_metadata"]),
+        translocation_status = as_r_list(CFG["test_meta_maf_formatter"]["translocation_status"]),
+    container:
+        "dlbclone:latest"
+    shell:
+        """
+        Rscript test_meta_maf_formatter.R \
+            --metadata {input.test_metadata} \
+            --maf {input.test_maf} \
+            --output_meta_dir {output.form_metadata} \
+            --output_maf_dir {output.form_maf} \
+            --maf_sample_id_colname {CFG[test_meta_maf_formatter][maf_sample_id_colname]} \
+            --metadata_sample_id_colname {CFG[test_meta_maf_formatter][metadata_sample_id_colname]} \
+            --sv_from_metadata '{params.sv_from_metadata}' \
+            --translocation_status '{params.translocation_status}' \
+            --truth_column_colname {CFG[test_meta_maf_formatter][truth_column_colname]}
+        """
+
+rule assemble_genetic_features:
+    input:
+        form_metadata = rules.test_meta_maf_formatter.output.form_metadata,
+        form_maf = rules.test_meta_maf_formatter.output.form_maf
+    output:
+        test_mutation_matrix = CFG["dlbclone_predict"]["test_data_dir"]
+    params:
+        sv_from_metadata = ",".join(CFG["test_meta_maf_formatter"]["sv_from_metadata"])
+    container: 
+        "dlbclone:latest"
+    shell:
+        """
+        Rscript assemble_genetic_features.R \
+            --form_metadata {input.form_metadata} \
+            --form_maf {input.form_maf} \
+            --output_matrix_dir {output.test_mutation_matrix} \
+            --sv_from_metadata '{params.sv_from_metadata}'  
+        """
+
+rule build_dlbclone_model:
     input:
         training_matrix = CFG["build_dlbclone_model"]["training_matrix_path"], # first column is sample ID and all other columns are features
         training_metadata = CFG["build_dlbclone_model"]["metadata_path"]

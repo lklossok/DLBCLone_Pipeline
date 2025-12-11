@@ -7,8 +7,6 @@ suppressWarnings(suppressMessages(library(tidyverse)))
 
 # Define command line options
 option_list <- list(
-    make_option(c("-m", "--metadata"), type = "character", help = "path to metadata file with truth labels"),
-    make_option(c("-t", "--training_matrix"), type = "character", help = "path to training mutation matrix file"),
     make_option(c("-p", "--opt_model_path"), type = "character", help = "Output path for optimized model"),
     make_option(c("-n", "--model_name_prefix"), type = "character", help = "Name prefix for optimized model"),
     
@@ -24,8 +22,6 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
-metadata_path <- opt$metadata
-training_matrix <- opt$training_matrix
 opt_model_path <- opt$opt_model_path
 model_name_prefix <- opt$model_name_prefix
 truth_column <- opt$truth_column
@@ -38,12 +34,12 @@ other_class <- opt$other_class
 min_k <- opt$min_k
 max_k <- opt$max_k
 
-# Load data
-metadata <- readr::read_tsv(metadata_path) %>%
+# Load GAMBL data
+metadata <- readr::read_tsv(system.file("extdata/dlbcl_meta_with_dlbclass.tsv",package = "GAMBLR.predict")) %>%
     dplyr::filter(.data[[truth_column]] %in% truth_classes)
 
-mutation_matrix <- readr::read_tsv(training_matrix) %>%
-    tibble::column_to_rownames("sample_id")
+mutation_matrix <- readr::read_tsv(system.file("extdata/all_full_status.tsv",package = "GAMBLR.predict")) %>%
+  tibble::column_to_rownames("sample_id") 
 
 
 umap_model <- make_and_annotate_umap(

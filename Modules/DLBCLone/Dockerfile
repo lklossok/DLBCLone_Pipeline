@@ -1,15 +1,12 @@
 # Pin to the latest R 4.4 patch for stability
 FROM rocker/rstudio:4.4.1
 
-LABEL description="Docker container for GAMBLR packages (pinned & low-RAM build)"
+LABEL description="Docker container for GAMBLR.predict (pinned & low-RAM build)"
 
 # ---- Versions you control (tags or SHAs) ----
 ARG GAMBLR_DATA_REF=v1.3.1
 ARG GAMBLR_HELPERS_REF=v1.3.1
-ARG GAMBLR_UTILS_REF=v1.3
-ARG GAMBLR_VIZ_REF=v1.3
 ARG GAMBLR_PREDICT_REF=v1.2
-ARG GAMBLR_OPEN_REF=v1.1
 
 # ---- Keep RAM use low during installs ----
 ENV PAK_NUM_WORKERS=1 \
@@ -30,19 +27,16 @@ ARG CRAN_MIRROR=https://cran.r-project.org
 ENV RENV_CONFIG_REPOS_OVERRIDE=${CRAN_MIRROR}
 RUN R -q -e "install.packages('pak', repos='${CRAN_MIRROR}'); pak::pak_setup()"
 RUN R -q -e "install.packages('BiocManager', repos='${CRAN_MIRROR}')"
-RUN R -q -e "install.packages('optparse', repos='${CRAN_MIRROR}')"
 
 # ---- CRAN packages ----
 RUN R -q -e "pak::pkg_install(c( \
-  'caret','circlize','cli','cowplot','data.table','dplyr','DT','FNN','ggalluvial', \
-  'ggbeeswarm','ggrepel','ggcorrplot','ggExtra','ggplot2','ggpubr','grid','ggseqlogo', \
-  'ggside','magrittr','mclust','methods','parallel','plotly','purrr','quarto','randomForest', \
-  'RColorBrewer','readr','readxl','rlang','rtracklayer','shinybusy','shinyjs','stringr', \
-  'S4Vectors','tibble','tidyr','tidyselect','uwot', 'wordcloud','wordcloud2' \
+  'caret','circlize','dplyr','DT','FNN','ggalluvial','ggrepel','ggside', \
+  'grid','mclust','purrr','randomForest','readr','shinybusy','shinyjs', \
+  'tibble','tidyr','tidyselect','plotly','ggpubr','readxl','uwot' \
 ), ask = FALSE)"
 
 # ---- Bioconductor packages (from Bioc, not GitHub) ----
-RUN R -q -e "BiocManager::install(c('BSgenome','ComplexHeatmap','GenomicDistributions','GenomicRanges','IRanges','Rsamtools'), ask=FALSE, update=FALSE)"
+RUN R -q -e "BiocManager::install(c('IRanges','ComplexHeatmap'), ask=FALSE, update=FALSE)"
 
 # Install remotes (small, fast), then install GAMBLR.data with low-memory flags
 RUN R -q -e "install.packages('remotes', repos='https://cran.r-project.org')"
@@ -59,24 +53,15 @@ RUN R -q -e " \
 # RUN R -q -e "pak::pkg_install('jlmelville/uwot@v0.2.3', ask=FALSE)"
 
 RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.helpers@%s', Sys.getenv('GAMBLR_HELPERS_REF', '${GAMBLR_HELPERS_REF}')), ask=FALSE)"
-RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.utils@%s', Sys.getenv('GAMBLR_UTILS_REF', '${GAMBLR_UTILS_REF}')), ask=FALSE)"
-RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.viz@%s', Sys.getenv('GAMBLR_VIZ_REF', '${GAMBLR_VIZ_REF}')), ask=FALSE)"
 RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.predict@%s', Sys.getenv('GAMBLR_PREDICT_REF', '${GAMBLR_PREDICT_REF}')), ask=FALSE)"
-RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.open@%s', Sys.getenv('GAMBLR_OPEN_REF', '${GAMBLR_OPEN_REF}')), ask=FALSE)"
-
-# ---- Install tidyverse ----
-RUN R -q -e "install.packages('tidyverse', repos='${CRAN_MIRROR}')"
 
 # ---- Smoke tests: fail early if anything is missing ----
 RUN R -q -e " \
   stopifnot(requireNamespace('GAMBLR.data',     quietly=TRUE)); \
   stopifnot(requireNamespace('GAMBLR.helpers',  quietly=TRUE)); \
-  stopifnot(requireNamespace('GAMBLR.utils',     quietly=TRUE)); \
-  stopifnot(requireNamespace('GAMBLR.viz',     quietly=TRUE)); \
   stopifnot(requireNamespace('GAMBLR.predict',  quietly=TRUE)); \
-  stopifnot(requireNamespace('GAMBLR.open',  quietly=TRUE)); \
   cat('Installed versions:\\n'); \
-  for(p in c('GAMBLR.data','GAMBLR.helpers','GAMBLR.utils','GAMBLR.viz','GAMBLR.predict','GAMBLR.open')) \
+  for(p in c('GAMBLR.data','GAMBLR.helpers','GAMBLR.predict')) \
     cat('  ', p, as.character(packageVersion(p)), '\\n') \
 "
 RUN R -q -e "pak::pkg_install('jlmelville/uwot@v0.2.3', ask=FALSE)"
