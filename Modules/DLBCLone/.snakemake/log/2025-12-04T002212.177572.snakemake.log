@@ -1,0 +1,23 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job      count
+-----  -------
+all          1
+total        1
+
+Select jobs to execute...
+
+[Thu Dec  4 00:22:12 2025]
+localrule all:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/tmp
+
+[Thu Dec  4 00:22:12 2025]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2025-12-04T002212.177572.snakemake.log

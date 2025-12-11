@@ -1,0 +1,4 @@
+AttributeError in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 16:
+'list' object has no attribute 'items'
+  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 81, in <module>
+  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 16, in as_r_list

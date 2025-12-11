@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+test_meta_maf_formatter        1
+total                          2
+
+Select jobs to execute...
+
+[Sun Dec  7 21:28:52 2025]
+rule test_meta_maf_formatter:
+    input: data/LySeqST_only_unaugmented_vaf.lymphgen_calls.no_cnvs.with_sv.no_A53.tsv, data/LySeqST_merged_unaugmented_vaf.maf
+    output: data/test_metadata_formatted.tsv, data/test_maf_formatted.maf
+    jobid: 1
+    reason: Missing output files: data/test_metadata_formatted.tsv, data/test_maf_formatted.maf
+    resources: tmpdir=/tmp
+
+RuleException in rule test_meta_maf_formatter in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 43:
+NameError: The name 'as_r_list(TMMF' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+        Rscript Rscript/test_meta_maf_formatter.R             --metadata {input.test_metadata}             --maf {input.test_maf}             --output_meta_dir {output.form_metadata}             --output_maf_dir {output.form_maf}             --maf_sample_id_colname {TMMF[maf_sample_id_colname]}             --metadata_sample_id_colname {TMMF[metadata_sample_id_colname]}             --sv_from_metadata "{as_r_list(TMMF[sv_from_metadata])}"             --translocation_status "{as_r_list(TMMF[translocation_status])}"             --truth_column {TMMF[truth_column]}             --truth_column_colname {TMMF[truth_column_colname]}
+        

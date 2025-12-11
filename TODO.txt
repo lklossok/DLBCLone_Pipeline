@@ -1,0 +1,35 @@
+1. Snakemake workflow for DLBCLone core analysis
+   - prepare_metadata
+   - assemble_genetic_features
+   - make_and_annotate_umap
+   - DLBCLone_optimize_params
+   - DLBCLone_predict 
+
+2. Build Dockerfile for DLBCLone Pipeline
+   
+   What is Docker? The whole point is to create a reproducible environment for running code.
+      A Dockerfile is a blueprint for creating a Docker image 
+      A Docker image is a template for running docker containers
+      A container is just a running process
+   
+   PUSH TO DOCKER HUB FOR PUBLIC USE
+   # docker login
+   # docker tag dlbclone:latest lklossok\dlbclone:latest
+   # docker push lklossok\dlbclone:latest
+
+   BUILD DOCKER IMAGE LOCALLY
+   # cd C:\Users\lukeg\Documents\Morin_Lab\DLBCLone_Pipeline\Modules\DLBCLone
+   # docker build -t dlbclone:latest .
+
+
+3. Implement CLI for DLBCLone
+   - Allow users to run the Snakemake workflow with custom parameters
+
+
+TODO LIST: 
+   COMPLETE - get docker container operating 
+   - add Rscripts for each rule
+   - what happens when you need assemble_genetic_features?
+   - what happens when loading a DLBCLone_model no longer needing make_and_annotate_umap 
+     and DLBCLone_optimize_params?
+   - how to best handle multiple samples?

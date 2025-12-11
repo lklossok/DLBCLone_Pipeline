@@ -1,0 +1,40 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Atlantis_Real
+Building DAG of jobs...
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                 count
+----------------  -------
+all                     1
+prepare_metadata        1
+total                   2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Dec  1 20:56:09 2025]
+localrule prepare_metadata:
+    output: data/metadata.tsv, data/mutation_matrix.tsv
+    jobid: 1
+    reason: Missing output files: data/mutation_matrix.tsv, data/metadata.tsv
+    resources: tmpdir=C:\Users\lukeg\AppData\Local\Temp
+RuleException:
+CalledProcessError in file "C:\Users\lukeg\Documents\Morin_Lab\DLBCLone_Pipeline\Modules\DLBCLone\DLBCLone.smk", line 22:
+Command 'Rscript --vanilla "C:\Users\lukeg\Documents\Morin_Lab\DLBCLone_Pipeline\Modules\DLBCLone\.snakemake\scripts\tmp5lx6_uck.metadata.R"' returned non-zero exit status 1.
+[Mon Dec  1 20:56:18 2025]
+Error in rule prepare_metadata:
+    message: None
+    jobid: 1
+    output: data/metadata.tsv, data/mutation_matrix.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Mon Dec  1 20:56:18 2025]
+Error in rule prepare_metadata:
+    message: None
+    jobid: 1
+    output: data/metadata.tsv, data/mutation_matrix.tsv
+Complete log(s): C:\Users\lukeg\Documents\Morin_Lab\DLBCLone_Pipeline\Modules\DLBCLone\.snakemake\log\2025-12-01T205609.816115.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

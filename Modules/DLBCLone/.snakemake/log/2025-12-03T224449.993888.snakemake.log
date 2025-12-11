@@ -1,0 +1,34 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                 count
+----------------  -------
+DLBCLone_predict        1
+all                     1
+total                   2
+
+Select jobs to execute...
+
+[Wed Dec  3 22:44:50 2025]
+rule DLBCLone_predict:
+    output: data/DLBCLone_predictions.tsv
+    jobid: 1
+    reason: Missing output files: data/DLBCLone_predictions.tsv
+    resources: tmpdir=/tmp
+
+[Wed Dec  3 23:00:06 2025]
+Error in rule DLBCLone_predict:
+    jobid: 1
+    output: data/DLBCLone_predictions.tsv
+
+RuleException:
+CalledProcessError in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 45:
+Command 'set -euo pipefail;  Rscript --vanilla /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/.snakemake/scripts/tmpir8u8j5v.DLBCLone_predict.R' returned non-zero exit status 1.
+  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 45, in __rule_DLBCLone_predict
+  File "/usr/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-12-03T224449.993888.snakemake.log

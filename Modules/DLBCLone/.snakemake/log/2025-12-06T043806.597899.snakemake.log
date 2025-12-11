@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                     count
+--------------------  -------
+Build_DLBCLone_model        1
+all                         1
+total                       2
+
+Select jobs to execute...
+
+[Sat Dec  6 04:38:07 2025]
+rule Build_DLBCLone_model:
+    input: data/all_full_status.tsv, data/dlbcl_meta_with_dlbclass.tsv
+    output: data/opt_model.rds, data/opt_model.uwot
+    jobid: 1
+    reason: Missing output files: data/opt_model.rds, data/opt_model.uwot
+    resources: tmpdir=/tmp
+
+[Sat Dec  6 04:38:15 2025]
+Error in rule Build_DLBCLone_model:
+    jobid: 1
+    input: data/all_full_status.tsv, data/dlbcl_meta_with_dlbclass.tsv
+    output: data/opt_model.rds, data/opt_model.uwot
+    shell:
+        
+        Rscript Rscript/DLBCLone_model.R
+            --metadata data/dlbcl_meta_with_dlbclass.tsv             --training_matrix data/all_full_status.tsv             --opt_model_path data/opt_model             --model_name_prefix opt 
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-12-06T043806.597899.snakemake.log

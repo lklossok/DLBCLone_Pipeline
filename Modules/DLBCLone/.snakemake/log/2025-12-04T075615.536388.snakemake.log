@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                          count
+-------------------------  -------
+all                              1
+assemble_genetic_features        1
+dlbclone_predict                 1
+total                            3
+
+Select jobs to execute...
+
+[Thu Dec  4 07:56:16 2025]
+rule assemble_genetic_features:
+    output: data/test_mutation_matrix.tsv
+    jobid: 2
+    reason: Code has changed since last execution
+    resources: tmpdir=/tmp
+
+[Thu Dec  4 07:56:38 2025]
+Error in rule assemble_genetic_features:
+    jobid: 2
+    output: data/test_mutation_matrix.tsv
+
+RuleException:
+CalledProcessError in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 32:
+Command 'set -euo pipefail;  Rscript --vanilla /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/.snakemake/scripts/tmpfzvw8dy_.assemble_genetic_features.R' returned non-zero exit status 1.
+  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 32, in __rule_assemble_genetic_features
+  File "/usr/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-12-04T075615.536388.snakemake.log

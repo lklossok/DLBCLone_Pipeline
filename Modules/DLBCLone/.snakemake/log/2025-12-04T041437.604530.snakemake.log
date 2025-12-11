@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                          count
+-------------------------  -------
+all                              1
+assemble_genetic_features        1
+total                            2
+
+Select jobs to execute...
+
+[Thu Dec  4 04:14:38 2025]
+rule assemble_genetic_features:
+    output: data/test_mutation_matrix.tsv
+    jobid: 1
+    reason: Missing output files: data/test_mutation_matrix.tsv
+    resources: tmpdir=/tmp
+
+[Thu Dec  4 04:14:58 2025]
+Finished job 1.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Thu Dec  4 04:14:58 2025]
+localrule all:
+    input: data/test_mutation_matrix.tsv
+    jobid: 0
+    reason: Input files updated by another job: data/test_mutation_matrix.tsv
+    resources: tmpdir=/tmp
+
+[Thu Dec  4 04:14:58 2025]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2025-12-04T041437.604530.snakemake.log

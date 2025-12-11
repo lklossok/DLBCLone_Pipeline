@@ -1,0 +1,49 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job stats:
+job                 count
+----------------  -------
+DLBCLone_model          1
+all                     1
+prepare_metadata        1
+total                   3
+
+Select jobs to execute...
+
+[Wed Dec  3 03:33:32 2025]
+rule prepare_metadata:
+    output: data/metadata.tsv, data/mutation_matrix.tsv
+    jobid: 2
+    reason: Missing output files: data/metadata.tsv, data/mutation_matrix.tsv
+    resources: tmpdir=/tmp
+
+[Wed Dec  3 03:33:37 2025]
+Finished job 2.
+1 of 3 steps (33%) done
+Select jobs to execute...
+
+[Wed Dec  3 03:33:37 2025]
+rule DLBCLone_model:
+    input: data/metadata.tsv, data/mutation_matrix.tsv
+    output: data/opt_model/opt_model.rds, data/opt_model/opt_umap.uwot
+    jobid: 1
+    reason: Missing output files: data/opt_model/opt_umap.uwot, data/opt_model/opt_model.rds; Input files updated by another job: data/metadata.tsv, data/mutation_matrix.tsv
+    resources: tmpdir=/tmp
+
+[Wed Dec  3 03:34:16 2025]
+Error in rule DLBCLone_model:
+    jobid: 1
+    input: data/metadata.tsv, data/mutation_matrix.tsv
+    output: data/opt_model/opt_model.rds, data/opt_model/opt_umap.uwot
+
+RuleException:
+CalledProcessError in file /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk, line 48:
+Command 'set -euo pipefail;  Rscript --vanilla /mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/.snakemake/scripts/tmpo91po2ox.DLBCLone_model.R' returned non-zero exit status 1.
+  File "/mnt/work/DLBCLone_Pipeline/Modules/DLBCLone/DLBCLone.smk", line 48, in __rule_DLBCLone_model
+  File "/usr/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-12-03T033331.677984.snakemake.log
