@@ -19,7 +19,7 @@ option_list <- list(
     make_option(c("-l", "--coding_value"), type = "integer", default=2, help = "coding mutation value default: 2"),
     make_option(c("-i", "--include_ashm"), type = "logical", default=FALSE, help = "include ASHM features default: FALSE"),
     make_option(c("-a", "--annotated_sv"), type = "character", default=NULL, help = "path to annotated sv file"),
-    make_option(c("-u", "--include_GAMBL_sv"), type = "logical", default=FALSE, help = "include GAMBLR sv features default: FALSE"),
+    make_option(c("-u", "--include_GAMBL_sv"), type = "logical", default=FALSE, help = "include GAMBLR sv features default: FALSE")
 )
 
 opt <- parse_args(OptionParser(option_list=option_list))

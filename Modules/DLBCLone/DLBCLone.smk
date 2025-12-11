@@ -3,7 +3,7 @@ import re
 
 
 configfile: "config/config.yaml"
-CFG = config()
+CFG = config
 
 
 localrules:
@@ -23,11 +23,11 @@ def as_r_list(d): # handle list objects from configfile
 
 rule all:
     input:
-        #CFG["opt_model_path"] + "/" + CFG["model_name_prefix"] + "_model.rds",
-        #CFG["opt_model_path"] + "/" + CFG["model_name_prefix"] + "_umap.uwot"
         #"data/test_metadata_formatted.tsv",
         #"data/test_maf_formatted.maf"
         CFG["dlbclone_predict"]["test_data_dir"]
+        #CFG["opt_model_path"] + "/" + CFG["model_name_prefix"] + "_model.rds",
+        #CFG["opt_model_path"] + "/" + CFG["model_name_prefix"] + "_umap.uwot"
         #CFG["dlbclone_predict"]["pred_dir"] + "/" + CFG["model_name_prefix"] + "_DLBCLone_predictions.tsv"
 
 rule test_meta_maf_formatter:
@@ -44,7 +44,7 @@ rule test_meta_maf_formatter:
         "dlbclone:latest"
     shell:
         """
-        Rscript Rscript/test_meta_maf_formatter.R \
+        Rscript test_meta_maf_formatter.R \
             --metadata {input.test_metadata} \
             --maf {input.test_maf} \
             --output_meta_dir {output.form_metadata} \
@@ -53,14 +53,13 @@ rule test_meta_maf_formatter:
             --metadata_sample_id_colname {CFG[test_meta_maf_formatter][metadata_sample_id_colname]} \
             --sv_from_metadata '{params.sv_from_metadata}' \
             --translocation_status '{params.translocation_status}' \
-            --truth_column {CFG[test_meta_maf_formatter][truth_column]} \
             --truth_column_colname {CFG[test_meta_maf_formatter][truth_column_colname]}
         """
 
 rule assemble_genetic_features:
     input:
-        form_metadata = rules.test_meta_maf_formatter.output.metadata_formatted,
-        form_maf = rules.test_meta_maf_formatter.output.maf_formatted
+        form_metadata = rules.test_meta_maf_formatter.output.form_metadata,
+        form_maf = rules.test_meta_maf_formatter.output.form_maf
     output:
         test_mutation_matrix = CFG["dlbclone_predict"]["test_data_dir"]
     params:
@@ -69,7 +68,7 @@ rule assemble_genetic_features:
         "dlbclone:latest"
     shell:
         """
-        Rscript Rscript/assemble_genetic_features.R \
+        Rscript assemble_genetic_features.R \
             --form_metadata {input.form_metadata} \
             --form_maf {input.form_maf} \
             --output_matrix_dir {output.test_mutation_matrix} \
@@ -89,7 +88,7 @@ rule build_dlbclone_model:
         "dlbclone:latest"
     shell:
         """
-        Rscript Rscript/DLBCLone_model.R \
+        Rscript DLBCLone_model.R \
             --metadata {input.training_metadata} \
             --training_matrix {input.training_matrix} \
             --opt_model_path {CFG[opt_model_path]} \
@@ -99,15 +98,15 @@ rule build_dlbclone_model:
 rule dlbclone_predict:
     input:
         mutation_matrix = CFG["dlbclone_predict"]["test_data_dir"], # first column is sample ID and all other columns are features
-        model_path = CFG["opt_model_path"] 
+        model_path = CFG["opt_model_path"], 
         model_prefix = CFG["model_name_prefix"]
     output:
         predictions = CFG["dlbclone_predict"]["pred_dir"] + "/" + CFG["model_name_prefix"] + "_DLBCLone_predictions.tsv"
     container:
-        "dlbclone:latest"3
+        "dlbclone:latest"
     shell:
         """
-        Rscript Rscript/DLBCLone_predict.R \
+        Rscript DLBCLone_predict.R \
             --test_features {input.mutation_matrix} \
             --output_dir {output.predictions} \
             --model_path {input.model_path} \
