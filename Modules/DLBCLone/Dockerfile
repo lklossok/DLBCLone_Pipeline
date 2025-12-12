@@ -27,6 +27,7 @@ ARG CRAN_MIRROR=https://cran.r-project.org
 ENV RENV_CONFIG_REPOS_OVERRIDE=${CRAN_MIRROR}
 RUN R -q -e "install.packages('pak', repos='${CRAN_MIRROR}'); pak::pak_setup()"
 RUN R -q -e "install.packages('BiocManager', repos='${CRAN_MIRROR}')"
+RUN R -q -e "install.packages('optparse', repos='${CRAN_MIRROR}')"
 
 # ---- CRAN packages ----
 RUN R -q -e "pak::pkg_install(c( \
@@ -50,7 +51,7 @@ RUN R -q -e " \
 "
 
 # Pin uwot if you need a specific GitHub version (CRAN uwot is usually fine)
-# RUN R -q -e "pak::pkg_install('jlmelville/uwot@v0.2.3', ask=FALSE)"
+RUN R -q -e "pak::pkg_install('jlmelville/uwot@v0.2.3', ask=FALSE)"
 
 RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.helpers@%s', Sys.getenv('GAMBLR_HELPERS_REF', '${GAMBLR_HELPERS_REF}')), ask=FALSE)"
 RUN R -q -e "pak::pkg_install(sprintf('morinlab/GAMBLR.predict@%s', Sys.getenv('GAMBLR_PREDICT_REF', '${GAMBLR_PREDICT_REF}')), ask=FALSE)"

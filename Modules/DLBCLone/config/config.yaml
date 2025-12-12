@@ -29,14 +29,9 @@ opt_model_path: "data/opt_model" # DLBCLone models are saved using GAMBLR.predic
 model_name_prefix: "opt" # saved DLBCLone models using GAMBLR.predict::DLBCLone_save_optimized() require a name prefix to be denoted by. Loaded DLBCLone models using GAMBLR.predict::DLBCLone_load_optimized() have a name prefix they're denoted by
 
 
-build_dlbclone_model: # Run UMAP and optimize parameters for classifying samples using UMAP and k-nearest neighbor. DLBCLone model object is built and saved for future use in prediction.
-
-    metadata_path: "data/dlbcl_meta_with_dlbclass.tsv" # path to training metadata associated with the training feature matrix
-    training_matrix_path: "data/all_full_status.tsv" # path to training feature matrix associated with the training metadata
-
-    # OPTIONAL: Tunable parameters for GAMBLR.predict::make_and_annotate_umap() function. Run UMAP and attach result to metadata.
-    truth_column: "lymphgen" # metadata column storing subtype truth labels
-
+# Run UMAP and optimize parameters for classifying samples using UMAP and k-nearest neighbor. DLBCLone model object is built and saved for future use in prediction.
+build_dlbclone_model: 
+    # Tunable parameters for GAMBLR.predict::make_and_annotate_umap() function. Run UMAP and attach result to metadata.
     core_features: # list input, for each subtype define features used for weighting. Make sure params as_r_list() is used in snakemake rule.
       ST2: ["SGK1", "DUSP2", "TET2", "SOCS1"]
       N1: ["NOTCH1"]
@@ -44,12 +39,10 @@ build_dlbclone_model: # Run UMAP and optimize parameters for classifying samples
       MCD: ["MYD88HOTSPOT", "CD79B", "PIM1"]
       BN2: ["BCL6_SV", "NOTCH2", "SPEN", "CD70"]
     core_feature_multiplier: 1.5 # what to multiply core features by
-    hidden_features: [] # features from gambl_genes you want removed from your trained DLBCLone model
+    hidden_features: null # features from gambl_genes you want removed from your trained DLBCLone model
 
-    # OPTIONAL: Tunable parameters for GAMBLR.predict::DLBCLone_optimize_parameters() function.
+    # Tunable parameters for GAMBLR.predict::DLBCLone_optimize_parameters() function.
     truth_classes: ["EZB", "MCD", "ST2", "N1", "BN2", "Other"] # List all truth classes found in the truth column
-    other_class: "Other" # subtype name for the "Other" class
-
     min_k: 3 # Starting k for knn (Default: 3)
     max_k: 33 # Ending k for knn (Default: 33)
 
@@ -57,7 +50,6 @@ build_dlbclone_model: # Run UMAP and optimize parameters for classifying samples
 dlbclone_predict: # Predict DLBCL genetic subgroup for one or more samples using a pre-trained DLBCLone model
 
     test_data_dir: "data/test_mutation_matrix.tsv" # path to test mutation matrix 
-
     pred_dir: "data" # path to store DLBCLone predictions
 
     # OPTIONAL: Tunable parameters for GAMBLR.predict::DLBCLone_predict() function

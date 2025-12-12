@@ -1,7 +1,9 @@
 # Load necessary libraries
 suppressWarnings(suppressMessages(library(optparse)))
 suppressWarnings(suppressMessages(library(GAMBLR.predict)))
-suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(tibble)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(readr)))
 
 
 # Define command line options
@@ -10,8 +12,8 @@ option_list <- list(
     make_option(c("-o", "--output_dir"), type = "character", help = "Output file path for predictions"),
     make_option(c("-p", "--model_path"), type = "character", help = "Pre-trained model file path"),
     make_option(c("-n", "--model_prefix"), type = "character", help = "Pre-trained model name prefix"),
-    make_option(c("-m", "--fill_missing"), action="store_true", default=FALSE, help="if TRUE, any features present in the model but not seen in test_features are added and set to zero. If FALSE, missing model features cause an error"),
-    make_option(c("-e", "--drop_extra"), action="store_true", default=FALSE, help="if TRUE, any features present in test_features but not seen during model training are dropped")
+    make_option(c("-m", "--fill_missing"), action="store_true", help="if TRUE, any features present in the model but not seen in test_features are added and set to zero. If FALSE, missing model features cause an error"),
+    make_option(c("-e", "--drop_extra"), action="store_true", help="if TRUE, any features present in test_features but not seen during model training are dropped")
 )
 
 opt <- parse_args(OptionParser(option_list=option_list))
